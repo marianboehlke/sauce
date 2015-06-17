@@ -1,0 +1,137 @@
+__author__ = 'Marian'
+
+import os
+from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException, WebDriverException
+from time import sleep
+
+
+class Saucelabs():
+  def __init__(self):
+    self.home_page = 'https://saucelabs.com/'
+    self.set_browser()
+
+
+  def set_browser(self):
+    chromedriver = os.path.join(os.getcwd(), "chromedriver")
+    self.browser = webdriver.Chrome(chromedriver)
+    self.browser.implicitly_wait(10)
+
+
+  def navigate_to_home(self):
+    self.browser.get(self.home_page)
+
+  def open_three_horizontal_bar(self):
+    try:
+      header = self.browser.find_element_by_tag_name('header')
+      three_bar = header.find_element_by_class_name("hamburger")
+      sleep(3)
+      three_bar.click()
+    except NoSuchElementException as ex:
+      print ex.message
+
+  def get_links_nav(self):
+    try:
+      self.nav = self.browser.find_element_by_id('global')
+    except NoSuchElementException as ex:
+      print ex.message
+
+  def __common_action(self):
+    self.navigate_to_home()
+    self.open_three_horizontal_bar()
+    self.get_links_nav()
+    sleep(2)
+
+  def __get_element_from_link_nav(self, xpath):
+    try:
+      element = self.nav.find_element_by_xpath(xpath)
+      return element
+    except NoSuchElementException as ex:
+      print ex.message
+
+  def __get_link_by_name(self, name):
+    try:
+      element = self.nav.find_element_by_link_text(name)
+      return element
+    except NoSuchElementException as ex:
+      print ex.message
+
+  def test_resource_link(self):
+    # RESOURCES = nav.find_element_by_xpath('div/section/ul[1]/li[1]/a')
+    self.__common_action()
+
+    resource_link = self.__get_element_from_link_nav('div/section/ul[1]/li[1]/a')
+    resource_link.click()
+
+  def test_pricing_link(self):
+    # PRICING = nav.find_element_by_xpath('div/section/ul[1]/li[4]/a')
+    self.__common_action()
+    pricing_link = self.__get_element_from_link_nav('div/section/ul[1]/li[4]/a')
+    pricing_link.click()
+
+  def test_features_link(self):
+    # FEATURES = nav.find_element_by_xpath('div/section/ul[2]/li[1]/a')
+    self.__common_action()
+    features_link = self.__get_element_from_link_nav('div/section/ul[2]/li[1]/a')
+    features_link.click()
+
+  def test_docs_link(self):
+     # DOCS = nav.find_element_by_xpath('div/section/ul[1]/li[2]/a')
+    self.__common_action()
+    features_link = self.__get_element_from_link_nav('div/section/ul[1]/li[2]/a')
+    features_link.click()
+
+  def test_sing_up_link(self):
+    # SIGN_UP = nav.find_element_by_xpath('div/section/ul[1]/li[5]/a')
+    self.__common_action()
+    sing_up_link = self.__get_element_from_link_nav('div/section/ul[1]/li[5]/a')
+    sing_up_link.click()
+
+  def test_company_link(self):
+    # COMPANY = nav.find_element_by_xpath('div/section/ul[2]/li[2]/a')
+    self.__common_action()
+    company_link = self.__get_element_from_link_nav('div/section/ul[2]/li[2]/a')
+    company_link.click()
+
+  def test_enterprise_link(self):
+    # ENTERPRISE = nav.find_element_by_xpath('div/section/ul[1]/li[3]/a')
+    self.__common_action()
+    enterprise_link = self.__get_element_from_link_nav('div/section/ul[1]/li[3]/a')
+    enterprise_link.click()
+
+  def test_login_link(self):
+    # LOGIN = nav.find_element_by_xpath('div/section/ul[1]/li[6]/a')
+    self.__common_action()
+    login_link = self.__get_element_from_link_nav('div/section/ul[1]/li[6]/a')
+    login_link.click()
+
+  def test_community_link(self):
+    # COMMUNITY = nav.find_element_by_xpath('div/section/ul[2]/li[3]/a[1]')
+    self.__common_action()
+    community_link = self.__get_element_from_link_nav('div/section/ul[2]/li[3]/a[1]')
+    community_link.click()
+
+  def test_solutions_link(self):
+     # SOLUTIONS = nav.find_element_by_xpath('div/section/ul[2]/li[3]/a[2]')
+    self.__common_action()
+    community_link = self.__get_element_from_link_nav('div/section/ul[2]/li[3]/a[2]')
+    community_link.click()
+
+  def run(self):
+    self.test_resource_link()
+    self.test_community_link()
+    self.test_company_link()
+    self.test_docs_link()
+    self.test_enterprise_link()
+    self.test_features_link()
+    self.test_login_link()
+    self.test_pricing_link()
+    self.test_sing_up_link()
+    self.test_solutions_link()
+
+
+
+saucelabs = Saucelabs()
+saucelabs.run()
+saucelabs.browser.quit()
+
